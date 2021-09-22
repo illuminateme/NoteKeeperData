@@ -1,5 +1,6 @@
 package com.example.notekeeperdata
 
+import android.R
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,21 @@ class NoteListActivity : AppCompatActivity() {
         }
 
         binding.listNotes.adapter =
-            ArrayAdapter(this, android.R.layout.simple_list_item_1, DataManager.notes)
+            ArrayAdapter(this, R.layout.simple_list_item_1, DataManager.notes)
+
+
+        binding.listNotes.setOnItemClickListener { parent, view, position, id ->
+            val activityIntent = Intent(this, MainActivity::class.java)
+            activityIntent.putExtra(EXTRA_NOTE_POSITION, position)
+            startActivity(activityIntent)
+        }
+
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        (binding.listNotes.adapter as ArrayAdapter<NoteInfo>).notifyDataSetChanged()
+    }
+
 }
